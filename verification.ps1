@@ -1,5 +1,14 @@
+# basic grading program to help some teachers out
+# free use however you want, no credit needed
+
+# allow partial credit
+# changing this affects the checksum!!!
+$allowPartialCredit = $true
+
+# clear shell
 cls
 
+# registry checks
 $schemaRegistry = @(
     @{registryPath = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit\'; registryKey = 'ProcessCreationIncludeCmdLine_Enabled'; expectedValue = '1'},
     @{registryPath = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging\'; registryKey = 'EnableScriptBlockLogging'; expectedValue = '1'},
@@ -7,6 +16,7 @@ $schemaRegistry = @(
     @{registryPath = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\Transcription\'; registryKey = 'EnableTranscripting'; expectedValue = '1'}
 )
 
+# auditpol checks
 $schemaAudit = @(
     @{auditSubcategory = 'credential validation'; expectedValues = @('success', 'failure')},
     @{auditSubcategory = 'security group management'; expectedValues = @('success')},
@@ -36,20 +46,25 @@ $schemaAudit = @(
     @{auditSubcategory = 'system integrity'; expectedValues = @('success', 'failure')}
 )
 
+# score counter and locale info
 $total = 0
 $txtinf = (Get-Culture).TextInfo
  
 $tableAuditing = ForEach ($audit in $schemaAudit) {
     $subcategory = $audit['auditSubcategory'].toLower();
     $ruleValue = auditpol /get /subcategory:$subcategory /r | convertfrom-csv
+    $status = 0
+    ForEach ($rule in $audit['expectedValues']) {
+        if ($ruleValue."Inclusion Setting".toLower() -match $rule.toLower()) {
+            $status++
+        }
+    }
     [pscustomobject]@{
-        "Status" = if ($ruleValue."Inclusion Setting".toLower() -contains $audit["expectedValues"]) {"SUCCESS"; $total++} else {"FAILED"}
+        "Status" = if ($status -eq $audit['expectedValues'].length) {"SUCCESS"; $total++} elseif (($status -gt 0) -And $allowPartialCredit) {"PARTIAL"; $total += $status / $audit['expectedValues'].length} else {"FAILED"}
         "Name" = $txtinf.toTitleCase($audit['auditSubcategory'].toLower())
         "Value" = $txtinf.toTitleCase($ruleValue."Inclusion Setting".toLower())
         "Expected Values" = $txtinf.toTitleCase(($audit["expectedValues"] -join ' and ').toLower())
     }
-    
-
 }
 
 $tableRegistry = ForEach ($registry in $schemaRegistry) {
@@ -74,6 +89,7 @@ $tableAuditing | Format-Table  @{
         switch ($_.Status) {
             "SUCCESS" {$color = "92"; break}
             "FAILED" {$color = "91"; break}
+            "PARTIAL" {$color = "93"; break}
             default {$color = "0"}
         }
         $e = [char]27
@@ -93,6 +109,5 @@ $tableRegistry | Format-Table  @{
        "$e[${color}m$($_.Status)${e}[0m"
     }
 }, "Path", "Key", "Value", "Expected Value"
-Write-Host $MyInvocation.MyCommand.Name
-Write-Host "what"
-#Invoke-Expression ([System.Text.Encoding]::Unicode.GetString([convert]::FromBase64String('VwByAGkAdABlAC0ASABvAHMAdAAgAC0ARgBvAHIAZQBnAHIAbwB1AG4AZABDAG8AbABvAHIAIABjAHkAYQBuACAAVABPAFQAQQBMADoAIAAgACQAdABvAHQAYQBsACAALwAgACgAJABzAGMAaABlAG0AYQBSAGUAZwBpAHMAdAByAHkALgBsAGUAbgBnAHQAaAAgACsAIAAkAHMAYwBoAGUAbQBhAEEAdQBkAGkAdAAuAGwAZQBuAGcAdABoACkAOwAkACgARwBlAHQALQBGAGkAbABlAEgAYQBzAGgAIAAkAE0AeQBJAG4AdgBvAGMAYQB0AGkAbwBuAC4ATQB5AEMAbwBtAG0AYQBuAGQALgBOAGEAbQBlACkALgBIAGEAcwBoADsAJABsAGYAOwAiAGAAbgBgAG4AIgA=')))
+
+Invoke-Expression ([System.Text.Encoding]::UTF8.GetString([convert]::FromBase64String('V3JpdGUtSG9zdCAtRm9yZWdyb3VuZENvbG9yIGN5YW4gVE9UQUw6ICAkdG90YWwgLyAoJHNjaGVtYVJlZ2lzdHJ5Lmxlbmd0aCArICRzY2hlbWFBdWRpdC5sZW5ndGgpOyBpZiAoJE15SW52b2NhdGlvbi5NeUNvbW1hbmQuU291cmNlKSB7JChHZXQtRmlsZUhhc2ggJE15SW52b2NhdGlvbi5NeUNvbW1hbmQuU291cmNlIC1FcnJvckFjdGlvbiBTdG9wKS5IYXNofSBlbHNlIHsiU2NyaXB0IGRvZXMgbm90IGV4aXN0IG9uIHN5c3RlbSJ9OyAkbGY=')))
