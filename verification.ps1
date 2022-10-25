@@ -95,4 +95,5 @@ $tableRegistry | Format-Table  @{
 }, "Path", "Key", "Value", "Expected Value"
 
 Write-Host -ForegroundColor cyan TOTAL:  $total / ($schemaRegistry.length + $schemaAudit.length)
+
 Invoke-Expression ([System.Text.Encoding]::Unicode.GetString([convert]::FromBase64String('JAAoAEcAZQB0AC0ARgBpAGwAZQBIAGEAcwBoACAAJABNAHkASQBuAHYAbwBjAGEAdABpAG8AbgAuAE0AeQBDAG8AbQBtAGEAbgBkAC4ATgBhAG0AZQApAC4ASABhAHMAaAA7ACQAbABmADsAIgBgAG4AYABuACIA')))
