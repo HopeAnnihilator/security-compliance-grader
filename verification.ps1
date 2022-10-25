@@ -93,6 +93,6 @@ $tableRegistry | Format-Table  @{
        "$e[${color}m$($_.Status)${e}[0m"
     }
 }, "Path", "Key", "Value", "Expected Value"
-Write-Output $MyInvocation.MyCommand.Name
-'a'
+Write-Host $MyInvocation.MyCommand.Name
+'a`n'
 Invoke-Expression ([System.Text.Encoding]::Unicode.GetString([convert]::FromBase64String('VwByAGkAdABlAC0ASABvAHMAdAAgAC0ARgBvAHIAZQBnAHIAbwB1AG4AZABDAG8AbABvAHIAIABjAHkAYQBuACAAVABPAFQAQQBMADoAIAAgACQAdABvAHQAYQBsACAALwAgACgAJABzAGMAaABlAG0AYQBSAGUAZwBpAHMAdAByAHkALgBsAGUAbgBnAHQAaAAgACsAIAAkAHMAYwBoAGUAbQBhAEEAdQBkAGkAdAAuAGwAZQBuAGcAdABoACkAOwAkACgARwBlAHQALQBGAGkAbABlAEgAYQBzAGgAIAAkAE0AeQBJAG4AdgBvAGMAYQB0AGkAbwBuAC4ATQB5AEMAbwBtAG0AYQBuAGQALgBOAGEAbQBlACkALgBIAGEAcwBoADsAJABsAGYAOwAiAGAAbgBgAG4AIgA=')))
