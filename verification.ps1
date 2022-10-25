@@ -96,4 +96,4 @@ $tableRegistry | Format-Table  @{
 
 Write-Host -ForegroundColor cyan TOTAL:  $total / ($schemaRegistry.length + $schemaAudit.length)
 
-$(Get-FileHash $MyInvocation.MyCommand.Name).Hash + "`n`n"
+$(Get-FileHash $MyInvocation.MyCommand.Name).Hash;$lf;"`n`n"
