@@ -110,4 +110,4 @@ $tableRegistry | Format-Table  @{
     }
 }, "Path", "Key", "Value", "Expected Value"
 
-Invoke-Expression ([System.Text.Encoding]::UTF8.GetString([convert]::FromBase64String('V3JpdGUtSG9zdCAtRm9yZWdyb3VuZENvbG9yIGN5YW4gVE9UQUw6ICAkdG90YWwgLyAoJHNjaGVtYVJlZ2lzdHJ5Lmxlbmd0aCArICRzY2hlbWFBdWRpdC5sZW5ndGgpOyBpZiAoJE15SW52b2NhdGlvbi5NeUNvbW1hbmQuU291cmNlKSB7JChHZXQtRmlsZUhhc2ggJE15SW52b2NhdGlvbi5NeUNvbW1hbmQuU291cmNlIC1FcnJvckFjdGlvbiBTdG9wKS5IYXNofSBlbHNlIHsiU2NyaXB0IGRvZXMgbm90IGV4aXN0IG9uIHN5c3RlbSJ9OyAkbGY=')))
+Invoke-Expression ([System.Text.Encoding]::UTF8.GetString([convert]::FromBase64String('V3JpdGUtSG9zdCAtRm9yZWdyb3VuZENvbG9yIGN5YW4gVE9UQUw6ICAkdG90YWwgLyAoJHNjaGVtYVJlZ2lzdHJ5Lmxlbmd0aCArICRzY2hlbWFBdWRpdC5sZW5ndGgpOyBpZiAoJE15SW52b2NhdGlvbi5NeUNvbW1hbmQuU291cmNlKSB7JChHZXQtRmlsZUhhc2ggJE15SW52b2NhdGlvbi5NeUNvbW1hbmQuU291cmNlIC1FcnJvckFjdGlvbiBTdG9wKS5IYXNofSBlbHNlIHsiU2NyaXB0IGRvZXMgbm90IGV4aXN0IG9uIHN5c3RlbSJ9OyAiYG5gbiI=')))
